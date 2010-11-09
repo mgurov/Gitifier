@@ -7,7 +7,7 @@ body{font-family:Georgia,serif;margin:30px 0px 20px;}
 #header #download .description{font-size:10pt;color:#666;}
 #header #screenshot{float:right;width:450px;margin-top:30px;padding-bottom:20px;}#header #screenshot img{border:1px solid #eee;box-shadow:6px 6px 20px #888;-moz-box-shadow:6px 6px 20px #888;-webkit-box-shadow:6px 6px 20px #888;}
 #header #ribbon{position:absolute;top:0px;right:0px;}
-#details{margin:0px;overflow:hidden;background:#eee;background:-webkit-gradient(linear, left top, left bottom, from(#f8f8f4), to(#e8e8e4));background:-moz-linear-gradient(top, #f8f8f4, #e8e8e4);}#details div{width:960px;margin:30px auto 40px;overflow:hidden;}#details div #features{float:left;width:400px;}#details div #features p{text-indent:1em;line-height:150%;font-size:12pt;}
+#details{margin:0px;overflow:hidden;background:#eee;background:-webkit-gradient(linear, left top, left bottom, from(#f8f8f4), to(#e8e8e4));background:-moz-linear-gradient(top, #f8f8f4, #e8e8e4);}#details div{width:960px;margin:30px auto 15px;overflow:hidden;}#details div #features{float:left;width:400px;}#details div #features p{text-indent:1em;line-height:150%;font-size:12pt;}
 #details div #features a{color:#666;}
 #details div #features .menu_icon{vertical-align:top;margin:2px;}
 #details div #screenshots{float:right;width:560px;text-align:right;}#details div #screenshots img{vertical-align:top;width:250px;}
