@@ -4,8 +4,14 @@
     <meta charset="utf-8">
     <title>Gitifier: Git commit notifier for MacOSX</title>
     <link rel="stylesheet" type="text/css" href="style.css">
-    <script type="text/javascript" src="right.js"></script>
-    <script type="text/javascript" src="right-lightbox.js"></script>
+    <link rel="stylesheet" type="text/css" href="jquery.lightbox-0.5.css">
+    <script type="text/javascript" src="jquery-1.4.4.min.js"></script>
+    <script type="text/javascript" src="jquery.lightbox-0.5.min.js"></script>
+    <script type="text/javascript">
+      $(function() {
+        $("a[rel=lightbox]").lightBox();
+      });
+    </script>
   </head>
   <body>
     <div id="header">
@@ -14,7 +20,7 @@
         <h3>Git commit notifier for MacOSX</h3>
       </section>
       <section id="screenshot">
-        <a href="screen-growls.png" rel="lightbox[screenshots]"><img src="screen-growls.png"></a>
+        <a href="screen-growls.png" rel="lightbox"><img src="screen-growls.png"></a>
       </section>
       <section id="download">
         <a href="http://github.com/downloads/psionides/gitifier/Gitifier-1.1.1.zip">
@@ -42,8 +48,8 @@
             or <a href="http://gitorious.org">Gitorious</a>, private or public.</p>
         </section>
         <section id="screenshots">
-          <a href="screen-preferences3.png" rel="lightbox[screenshots]"><img src="screen-preferences3.png"></a>
-          <a href="screen-commit.png" rel="lightbox[screenshots]"><img src="screen-commit.png"></a>
+          <a href="screen-preferences3.png" rel="lightbox"><img src="screen-preferences3.png"></a>
+          <a href="screen-commit.png" rel="lightbox"><img src="screen-commit.png"></a>
         </section>
       </div>
     </div>
