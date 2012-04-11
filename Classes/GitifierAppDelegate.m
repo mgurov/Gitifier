@@ -233,9 +233,8 @@ static CGFloat IntervalBetweenGrowls        = 0.05;
     GrowlController *growl = [GrowlController sharedController];
     NSInteger i = 0;
     
-    for (NSString *name in names) {
-        // intervals added because Growl 1.3 can't figure out the proper order by itself...
-        [growl performSelector: @selector(showGrowlWithNewBranch:) withObject: name afterDelay: i * IntervalBetweenGrowls];
+    for (NSArray *match in names) {
+        [growl performSelector: @selector(showGrowlWithNewBranch:) withObject: match afterDelay: i * IntervalBetweenGrowls];
         i += 1;
     }
 }

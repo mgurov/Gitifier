@@ -14,7 +14,7 @@
 
 static NSString *nameRegexp = @"[\\p{Ll}\\p{Lu}\\p{Lt}\\p{Lo}\\p{Nd}\\-\\.]+";
 static NSString *commitRangeRegexp = @"[0-9a-f]+\\.\\.[0-9a-f]+";
-static NSString *newBranchesRegexp = @"\\[new (?:branch|tag)\\]\\s+(.*?)\\s+->";
+static NSString *newBranchesRegexp = @"\\[new (branch|tag)\\]\\s+(.*?)\\s+->";
 
 @implementation Repository
 
@@ -153,7 +153,7 @@ static NSString *newBranchesRegexp = @"\\[new (?:branch|tag)\\]\\s+(.*?)\\s+->";
     [self notifyDelegateWithSelector: @selector(repositoryWasCloned:)];
   } else if ([command isEqual: @"fetch"]) {
     NSArray *commitRanges = [output componentsMatchedByRegex: commitRangeRegexp];
-    NSArray *newBranches = [output componentsMatchedByRegex: newBranchesRegexp capture: 1];
+    NSArray *newBranches = [output arrayOfCaptureComponentsMatchedByRegex:newBranchesRegexp];
     NSArray *arguments = [commitRanges arrayByAddingObject: @"--pretty=tformat:%ai%n%H%n%aN%n%aE%n%s%n"];
     NSString *workingCopy = [self workingCopyDirectory];
     if (newBranches.count > 0) {

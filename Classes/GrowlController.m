@@ -42,11 +42,14 @@ NSString *OtherMessageGrowl           = @"Other message";
   return self;
 }
 
-- (void) showGrowlWithNewBranch: (NSString *) name {
+- (void) showGrowlWithNewBranch: (NSArray *) branch {
     BOOL sticky = [GitifierDefaults boolForKey: StickyNotificationsKey];
-    
+
+    NSString * type = [branch objectAtIndex:1];
+    NSString * name = [branch objectAtIndex:2];
+
     [GrowlApplicationBridge notifyWithTitle: name
-                                description: @"New Branch"
+                                description:PSFormat(@"New %@", type)
                            notificationName: NewBranchDetectedGrowl
                                    iconData: [self growlIcon]
                                    priority: 0
