@@ -9,12 +9,14 @@
       <string>Commit received</string>
       <string>Repository update failed</string>
       <string>Other message</string>
+      <string>New branch discovered</string>
     </array>
     <key>DefaultNotifications</key>
     <array>
       <string>Commit received</string>
       <string>Repository update failed</string>
       <string>Other message</string>
+      <string>New branch discovered</string>
     </array>
   </dict>
 </plist>

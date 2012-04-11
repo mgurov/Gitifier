@@ -13,6 +13,7 @@
 #import "RepositoryListController.h"
 
 NSString *CommitReceivedGrowl         = @"Commit received";
+NSString *NewBranchDetectedGrowl      = @"New branch discovered";
 NSString *RepositoryUpdateFailedGrowl = @"Repository update failed";
 NSString *OtherMessageGrowl           = @"Other message";
 
@@ -39,6 +40,18 @@ NSString *OtherMessageGrowl           = @"Other message";
     [GrowlApplicationBridge setGrowlDelegate: self];
   }
   return self;
+}
+
+- (void) showGrowlWithNewBranch: (NSString *) name {
+    BOOL sticky = [GitifierDefaults boolForKey: StickyNotificationsKey];
+    
+    [GrowlApplicationBridge notifyWithTitle: name
+                                description: @"New Branch"
+                           notificationName: NewBranchDetectedGrowl
+                                   iconData: [self growlIcon]
+                                   priority: 0
+                                   isSticky: sticky
+                               clickContext: nil];
 }
 
 - (void) showGrowlWithCommit: (Commit *) commit {

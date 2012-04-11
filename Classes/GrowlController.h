@@ -24,6 +24,7 @@ extern NSString *OtherMessageGrowl;
 + (BOOL) growlDetected;
 
 - (void) showGrowlWithCommit: (Commit *) commit;
+- (void) showGrowlWithNewBranch: (NSString *) name;
 - (void) showGrowlWithCommitGroup: (NSArray *) commits includesAllCommits: (BOOL) includesAll;
 - (void) showGrowlWithCommitGroupIncludingAllCommits: (NSArray *) commits;
 - (void) showGrowlWithCommitGroupIncludingSomeCommits: (NSArray *) commits;

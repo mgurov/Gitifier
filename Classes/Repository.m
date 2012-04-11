@@ -156,9 +156,9 @@ static NSString *newBranchesRegexp = @"\\[new branch\\]\\s+(.*?)\\s+->";
     NSArray *newBranches = [output componentsMatchedByRegex: newBranchesRegexp capture: 1];
     NSArray *arguments = [commitRanges arrayByAddingObject: @"--pretty=tformat:%ai%n%H%n%aN%n%aE%n%s%n"];
     NSString *workingCopy = [self workingCopyDirectory];
-      if (newBranches.count > 0) {
-          NSLog(@"Error: new branches detected.");
-      }
+    if (newBranches.count > 0) {
+      [delegate newBranchDetected:newBranches inRepository:self];
+    }
     if (commitRanges.count > 0 && workingCopy && [self directoryExists: workingCopy]) {
       [git runCommand: @"log" withArguments: arguments inPath: workingCopy];
     } else {

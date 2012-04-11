@@ -11,6 +11,7 @@ typedef enum { ActiveRepository, UnavailableRepository } RepositoryStatus;
 
 @protocol RepositoryDelegate
 - (void) commitsReceived: (NSArray *) commits inRepository: (Repository *) repository;
+- (void) newBranchDetected: (NSArray *) names inRepository: (Repository *) repository;
 @end
 
 // ------------------------------
