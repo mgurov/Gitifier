@@ -14,7 +14,7 @@
 
 static NSString *nameRegexp = @"[\\p{Ll}\\p{Lu}\\p{Lt}\\p{Lo}\\p{Nd}\\-\\.]+";
 static NSString *commitRangeRegexp = @"[0-9a-f]+\\.\\.[0-9a-f]+";
-static NSString *newBranchesRegexp = @"\\[new branch\\]\\s+(.*?)\\s+->";
+static NSString *newBranchesRegexp = @"\\[new (?:branch|tag)\\]\\s+(.*?)\\s+->";
 
 @implementation Repository
 
