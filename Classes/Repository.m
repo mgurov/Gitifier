@@ -14,6 +14,7 @@
 
 static NSString *nameRegexp = @"[\\p{Ll}\\p{Lu}\\p{Lt}\\p{Lo}\\p{Nd}\\-\\.]+";
 static NSString *commitRangeRegexp = @"[0-9a-f]+\\.\\.[0-9a-f]+";
+static NSString *newBranchesRegexp = @"\\[new branch\\]\\s+(.*?)\\s+->";
 
 @implementation Repository
 
@@ -152,8 +153,12 @@ static NSString *commitRangeRegexp = @"[0-9a-f]+\\.\\.[0-9a-f]+";
     [self notifyDelegateWithSelector: @selector(repositoryWasCloned:)];
   } else if ([command isEqual: @"fetch"]) {
     NSArray *commitRanges = [output componentsMatchedByRegex: commitRangeRegexp];
+    NSArray *newBranches = [output componentsMatchedByRegex: newBranchesRegexp capture: 1];
     NSArray *arguments = [commitRanges arrayByAddingObject: @"--pretty=tformat:%ai%n%H%n%aN%n%aE%n%s%n"];
     NSString *workingCopy = [self workingCopyDirectory];
+      if (newBranches.count > 0) {
+          NSLog(@"Error: new branches detected.");
+      }
     if (commitRanges.count > 0 && workingCopy && [self directoryExists: workingCopy]) {
       [git runCommand: @"log" withArguments: arguments inPath: workingCopy];
     } else {
