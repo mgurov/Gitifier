@@ -230,45 +230,14 @@ static CGFloat IntervalBetweenGrowls        = 0.05;
 // --- repository callbacks ---
 
 - (void) newBranchDetected: (NSArray *) names inRepository: (Repository *) repository {
-    BOOL hasNotificationLimit = [GitifierDefaults boolForKey: NotificationLimitEnabledKey];
-    NSInteger notificationLimit = [GitifierDefaults integerForKey: NotificationLimitValueKey];
-    
-    NSArray *relevantCommits = names;
-    NSArray *displayedNames, *remainingNames;
-    
-    if (hasNotificationLimit && names.count > notificationLimit) {
-        NSInteger displayed = notificationLimit - 1;
-        displayedNames = [names subarrayWithRange: NSMakeRange(0, displayed)];
-        remainingNames = [names subarrayWithRange: NSMakeRange(displayed, relevantCommits.count - displayed)];
-    } else {
-        displayedNames = names;
-        remainingNames = [NSArray array];
-    }
-    
     GrowlController *growl = [GrowlController sharedController];
     NSInteger i = 0;
     
-    for (NSString *name in displayedNames) {
+    for (NSString *name in names) {
         // intervals added because Growl 1.3 can't figure out the proper order by itself...
         [growl performSelector: @selector(showGrowlWithNewBranch:) withObject: name afterDelay: i * IntervalBetweenGrowls];
         i += 1;
     }
-    
-/*
-    if (remainingNames.count > 0) {
-        SEL action;
-        
-        if (notificationLimit == 1) {
-            action = @selector(showGrowlWithCommitGroupIncludingAllCommits:);
-        } else {
-            action = @selector(showGrowlWithCommitGroupIncludingSomeCommits:);
-        }
-        
-        [growl performSelector: action withObject: remainingNames afterDelay: i * IntervalBetweenGrowls];
-    }
-*/
-
-//    [statusBarController updateRecentCommitsList: relevantCommits];
 }
 
 
