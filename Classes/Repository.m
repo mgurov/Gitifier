@@ -46,11 +46,16 @@ static NSString *newBranchesRegexp = @"\\[new (branch|tag)\\]\\s+(.*?)\\s+->";
 + (Repository *) repositoryFromHash: (NSDictionary *) hash {
   NSString *url = [hash objectForKey: @"url"];
   NSString *name = [hash objectForKey: @"name"];
+  BOOL inlined = [[hash objectForKey: @"inlinedFetch"] boolValue];
   Repository *repo = nil;
   if (url) {
     repo = [[Repository alloc] initWithUrl: url];
     if (name) {
       repo.name = name;
+    }
+    if (inlined) {
+      NSLog(@"Setting inlined for %@.", url);
+      [repo setInlineFetch:inlined];
     }
   }
   return repo;
@@ -69,10 +74,15 @@ static NSString *newBranchesRegexp = @"\\[new (branch|tag)\\]\\s+(.*?)\\s+->";
     name = [self nameFromUrl: url];
     commitUrlPattern = [self findCommitUrlPattern];
     status = ActiveRepository;
+    inlineFetch = false;
     return self;
   } else {
     return nil;
   }
+}
+
+- (void) setInlineFetch: (BOOL) newValue {
+  inlineFetch = newValue;
 }
 
 - (NSDictionary *) hashRepresentation {

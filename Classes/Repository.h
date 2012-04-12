@@ -27,6 +27,7 @@ typedef enum { ActiveRepository, UnavailableRepository } RepositoryStatus;
   NSString *commitUrlPattern;
   id delegate;
   BOOL isBeingUpdated;
+  BOOL inlineFetch;
 }
 
 @property (copy) NSString *url;
