@@ -123,13 +123,18 @@ static NSString *newBranchesRegexp = @"\\[new (branch|tag)\\]\\s+(.*?)\\s+->";
   NSString *workingCopy = [self workingCopyDirectory];
   BOOL cachesDirectoryExists = cachesDirectory && [self ensureDirectoryExists: cachesDirectory];
   BOOL workingCopyDoesntExist = workingCopy && [self ensureDirectoryIsDeleted: workingCopy];
-
-  if (cachesDirectoryExists && workingCopyDoesntExist) {
+  if (workingCopyDoesntExist && inlineFetch) {
+      NSLog(@"Error: inline fetch and no where from. Dude, where's my data?");
+  } else if (cachesDirectoryExists && workingCopyDoesntExist) {
     isBeingUpdated = YES;
     [git runCommand: @"clone" withArguments: PSArray(url, workingCopy, @"-n") inPath: cachesDirectory];
   } else {
     [self notifyDelegateWithSelector: @selector(repositoryCouldNotBeCloned:)];
   }
+}
+
+- (BOOL)isInlinedWorkingDirectory {
+ return inlineFetch;
 }
 
 - (void) fetchNewCommits {
@@ -139,9 +144,12 @@ static NSString *newBranchesRegexp = @"\\[new (branch|tag)\\]\\s+(.*?)\\s+->";
       if ([self directoryExists: workingCopy]) {
         isBeingUpdated = YES;
         [git runCommand: @"fetch" inPath: workingCopy];
-      } else {
+      } else if (![self isInlinedWorkingDirectory]) {
         NSLog(@"Working copy directory %@ was deleted, I need to clone it again.", workingCopy);
         [self clone];
+      } else {
+          //TODO: add the dir to the complaint
+          [[GrowlController sharedController] showGrowlWithError: @"Hey, where's my data?" repository: self];
       }
     } else {
       [[GrowlController sharedController] showGrowlWithError: @"Can't fetch repository." repository: self];
@@ -154,7 +162,10 @@ static NSString *newBranchesRegexp = @"\\[new (branch|tag)\\]\\s+(.*?)\\s+->";
 }
 
 - (void) deleteWorkingCopy {
-  [self ensureDirectoryIsDeleted: [self workingCopyDirectory]];
+    if ([self isInlinedWorkingDirectory]) {
+        return; //TODO: bit dangerous to keep it like this. There should probably be two subclasses of the Repository?
+    }
+    [self ensureDirectoryIsDeleted: [self workingCopyDirectory]];
 }
 
 - (void) commandCompleted: (NSString *) command output: (NSString *) output {
@@ -242,7 +253,11 @@ static NSString *newBranchesRegexp = @"\\[new (branch|tag)\\]\\s+(.*?)\\s+->";
 }
 
 - (NSString *) workingCopyDirectory {
-  return [[self cachesDirectory] stringByAppendingPathComponent: [url MD5Hash]];
+    if (inlineFetch) {
+        return url;
+    } else {
+        return [[self cachesDirectory] stringByAppendingPathComponent: [url MD5Hash]];
+    }
 }
 
 - (BOOL) ensureDirectoryIsDeleted: (NSString *) directory {
