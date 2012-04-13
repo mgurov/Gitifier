@@ -28,6 +28,7 @@ typedef enum { ActiveRepository, UnavailableRepository } RepositoryStatus;
   id delegate;
   BOOL isBeingUpdated;
   BOOL inlineFetch;
+  NSString* fetchRemote;
 }
 
 @property (copy) NSString *url;
@@ -58,4 +59,5 @@ typedef enum { ActiveRepository, UnavailableRepository } RepositoryStatus;
 - (BOOL) ensureDirectoryIsDeleted: (NSString *) directory;
 - (BOOL) ensureDirectoryExists: (NSString *) directory;
 
+- (void)setFetchRemote:(NSString *)string;
 @end

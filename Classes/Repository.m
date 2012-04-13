@@ -47,6 +47,7 @@ static NSString *newBranchesRegexp = @"\\[new (branch|tag)\\]\\s+(.*?)\\s+->";
   NSString *url = [hash objectForKey: @"url"];
   NSString *name = [hash objectForKey: @"name"];
   BOOL inlined = [[hash objectForKey: @"inlinedFetch"] boolValue];
+  NSString *fetchRemote = [hash objectForKey: @"fetchRemote"];
   Repository *repo = nil;
   if (url) {
     repo = [[Repository alloc] initWithUrl: url];
@@ -56,6 +57,9 @@ static NSString *newBranchesRegexp = @"\\[new (branch|tag)\\]\\s+(.*?)\\s+->";
     if (inlined) {
       NSLog(@"Setting inlined for %@.", url);
       [repo setInlineFetch:inlined];
+    }
+    if (fetchRemote) {
+        [repo setFetchRemote:fetchRemote];
     }
   }
   return repo;
@@ -83,6 +87,10 @@ static NSString *newBranchesRegexp = @"\\[new (branch|tag)\\]\\s+(.*?)\\s+->";
 
 - (void) setInlineFetch: (BOOL) newValue {
   inlineFetch = newValue;
+}
+
+- (void)setFetchRemote:(NSString *)string {
+  fetchRemote = string;
 }
 
 - (NSDictionary *) hashRepresentation {
@@ -143,7 +151,8 @@ static NSString *newBranchesRegexp = @"\\[new (branch|tag)\\]\\s+(.*?)\\s+->";
     if (workingCopy) {
       if ([self directoryExists: workingCopy]) {
         isBeingUpdated = YES;
-        [git runCommand: @"fetch" inPath: workingCopy];
+        NSArray *fetchParams = fetchRemote ? [NSArray arrayWithObject:fetchRemote] : [NSArray array];
+        [git runCommand: @"fetch" withArguments:fetchParams inPath: workingCopy];
       } else if (![self isInlinedWorkingDirectory]) {
         NSLog(@"Working copy directory %@ was deleted, I need to clone it again.", workingCopy);
         [self clone];
