@@ -1,0 +1,2 @@
+* show numer of commits since forking the new branch (git merge-base? git log --<from_merge_point>?)
+* show diff since forking the new branch
